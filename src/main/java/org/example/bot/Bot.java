@@ -2,6 +2,7 @@ package org.example.bot;
 
 import org.example.service.ConvertService;
 import org.example.service.MessageService;
+import org.example.userCounting.UserStorageService;
 import org.example.util.BotMessages;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -33,9 +34,13 @@ public class Bot extends TelegramLongPollingBot {
 
     public void processUpdate (Update update) {
 
+
+
         if (update.hasMessage() && update.getMessage().hasText()) {
             String message = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
+
+            UserStorageService.addRequest(chatId);
 
             if (message.startsWith("/start")) {
                 messageService.sendPlainText(chatId, BotMessages.GREETING);
